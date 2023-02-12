@@ -1,5 +1,5 @@
 ---
-- name: Ensure old versions of Docker are not installed.
+- name: Ensure old versions of Docker are not installed
   package:
     name:
       - docker
@@ -7,13 +7,13 @@
       - docker-engine
     state: absent
 
-- name: Add Docker GPG key.
+- name: Add Docker GPG key
   rpm_key:
     key: "{{ docker_yum_gpg_key }}"
     state: present
   when: docker_add_repo | bool
 
-- name: Add Docker repository.
+- name: Add Docker repository
   get_url:
     url: "{{ docker_yum_repo_url }}"
     dest: '/etc/yum.repos.d/docker-{{ docker_edition }}.repo'
@@ -22,7 +22,7 @@
     mode: 0644
   when: docker_add_repo | bool
 
-- name: Configure Docker Nightly repo.
+- name: Configure Docker Nightly repo
   ini_file:
     dest: '/etc/yum.repos.d/docker-{{ docker_edition }}.repo'
     section: 'docker-{{ docker_edition }}-nightly'
@@ -32,7 +32,7 @@
     no_extra_spaces: true
   when: docker_add_repo | bool
 
-- name: Configure Docker Test repo.
+- name: Configure Docker Test repo
   ini_file:
     dest: '/etc/yum.repos.d/docker-{{ docker_edition }}.repo'
     section: 'docker-{{ docker_edition }}-test'
@@ -44,12 +44,12 @@
 
 - name: Configure containerd on RHEL
   block:
-    - name: Ensure container-selinux is installed.
+    - name: Ensure container-selinux is installed
       package:
         name: container-selinux
         state: present
 
-    - name: Ensure containerd.io is installed.
+    - name: Ensure containerd.io is installed
       package:
         name: containerd.io
         state: present
